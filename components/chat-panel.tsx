@@ -36,9 +36,12 @@ function Timer({ timeInterval = 14 }: { timeInterval?: number}) {
         isRunning,
     } = useTimer({expiryTimestamp: expiryTime, onExpire: () => console.warn('onExpire called')});
 
+    let paddedMinutes = String(minutes).padStart(2, '0');
+    let paddedSeconds = String(seconds).padStart(2, '0');
+
     return (
         <div className={"bg-gray-100 border border-gray-300 m-4 p-0.5 rounded-sm"}>
-            <p className={!isRunning ? "text-red-500" : "text-gray-900"}>{minutes}:{seconds}</p>
+            <p className={!isRunning ? "text-red-500" : "text-gray-900"}>{paddedMinutes}:{paddedSeconds}</p>
         </div>
     )
 }
