@@ -20,7 +20,7 @@ const initialSystemMessages = [
   },
   {
     role: 'system',
-    content: 'CRITICAL IMPORTANCE - you must also ask questions (not all the time but often like a natural conversation) about yourself. When asking questions, ask them one at a time.'
+    content: 'You can also ask questions sometimes *about yourself only* - NEVER about the resident doctor interviewing you*. When asking questions, ask them one at a time.'
   },
   {
     role: 'system',
