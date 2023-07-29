@@ -44,6 +44,7 @@
     "react-markdown": "^8.0.7",
     "react-syntax-highlighter": "^15.5.0",
     "react-textarea-autosize": "^8.4.1",
+    "react-timer-hook": "^3.0.7",
     "remark-gfm": "^3.0.1",
     "remark-math": "^5.1.1",
     "ts-node": "^10.9.1"
