@@ -1,8 +1,7 @@
 import {UseChatHelpers} from 'ai/react'
 
-import {Button} from '@/components/ui/button'
-import {ExternalLink} from '@/components/external-link'
-import {IconArrowRight} from '@/components/ui/icons'
+import Image from "next/image";
+import jasonPhoto from "public/jason-icon.png";
 
 const exampleMessages = [
     {
@@ -26,6 +25,9 @@ export function EmptyScreen({setInput}: Pick<UseChatHelpers, 'setInput'>) {
                 <h1 className="mb-2 text-lg font-semibold">
                     Welcome to patient simulator!
                 </h1>
+                <div className={"flex justify-center items-center mb-2"}>
+                    <Image src={jasonPhoto} alt={"Photo of the patient"} className={"w-48 h-48 rounded-lg"}/>
+                </div>
                 <p className="mb-2 leading-normal text-muted-foreground">
                     For this case you will be seeing Jason Brody, a 26 year-old patient
                     of yours for
