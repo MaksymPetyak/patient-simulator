@@ -54,7 +54,7 @@ export const generateRandomString = (length: number, lowercase = false) => {
 }
 
 const CodeBlock: FC<Props> = memo(({ language, value }) => {
-  const { isCopied, copyToClipboard } = useCopyToClipboard({ timeout: 2000 })
+  const { isPlaying, copyToClipboard } = useCopyToClipboard({ timeout: 2000 })
 
   const downloadAsFile = () => {
     if (typeof window === 'undefined') {
@@ -85,7 +85,7 @@ const CodeBlock: FC<Props> = memo(({ language, value }) => {
   }
 
   const onCopy = () => {
-    if (isCopied) return
+    if (isPlaying) return
     copyToClipboard(value)
   }
 
@@ -109,7 +109,7 @@ const CodeBlock: FC<Props> = memo(({ language, value }) => {
             className="text-xs hover:bg-zinc-800 focus-visible:ring-1 focus-visible:ring-slate-700 focus-visible:ring-offset-0"
             onClick={onCopy}
           >
-            {isCopied ? <IconCheck /> : <IconCopy />}
+            {isPlaying ? <IconCheck /> : <IconCopy />}
             <span className="sr-only">Copy code</span>
           </Button>
         </div>

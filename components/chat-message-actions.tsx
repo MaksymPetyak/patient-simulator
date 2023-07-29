@@ -3,12 +3,39 @@
 import { type Message } from 'ai'
 
 import { Button } from '@/components/ui/button'
-import { IconCheck, IconCopy } from '@/components/ui/icons'
-import { useCopyToClipboard } from '@/lib/hooks/use-copy-to-clipboard'
+import {IconPlay, IconStop} from '@/components/ui/icons'
 import { cn } from '@/lib/utils'
+import React, {useState} from "react";
 
 interface ChatMessageActionsProps extends React.ComponentProps<'div'> {
   message: Message
+}
+
+async function playText(text: string, setIsPlaying: (isPlaying: boolean) => void) {
+    const response = await fetch('/api/voice', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ text })
+    })
+
+    if (!response.ok) {
+        throw new Error("Speech generation failed");
+    }
+
+    const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+    const audioData = await response.arrayBuffer();
+    const audioBuffer = await audioContext.decodeAudioData(audioData);
+
+    const source = audioContext.createBufferSource();
+    source.buffer = audioBuffer;
+    source.connect(audioContext.destination);
+    source.start();
+
+    source.onended = () => {
+        audioContext.close();
+    }
 }
 
 export function ChatMessageActions({
@@ -16,23 +43,27 @@ export function ChatMessageActions({
   className,
   ...props
 }: ChatMessageActionsProps) {
-  const { isCopied, copyToClipboard } = useCopyToClipboard({ timeout: 2000 })
+  const [isPlaying, setIsPlaying] = useState<boolean>(false)
 
-  const onCopy = () => {
-    if (isCopied) return
-    copyToClipboard(message.content)
+  const togglePlay = () => {
+      if (isPlaying) {
+          setIsPlaying(false)
+      } else {
+          setIsPlaying(true)
+          playText(message.content, setIsPlaying)
+      }
   }
 
   return (
     <div
       className={cn(
-        'flex items-center justify-end transition-opacity group-hover:opacity-100 md:absolute md:-right-10 md:-top-2 md:opacity-0',
+        'flex items-center justify-end md:absolute md:-right-10 md:-top-2',
         className
       )}
       {...props}
     >
-      <Button variant="ghost" size="icon" onClick={onCopy}>
-        {isCopied ? <IconCheck /> : <IconCopy />}
+      <Button variant="ghost" size="icon" onClick={togglePlay}>
+        {isPlaying ? <IconStop /> : <IconPlay />}
         <span className="sr-only">Copy message</span>
       </Button>
     </div>

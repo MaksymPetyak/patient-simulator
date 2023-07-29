@@ -29,5 +29,5 @@ export function useCopyToClipboard({
     })
   }
 
-  return { isCopied, copyToClipboard }
+  return { isPlaying: isCopied, copyToClipboard }
 }
