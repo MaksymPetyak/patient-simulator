@@ -5,7 +5,7 @@ import { type Message } from 'ai'
 import { Button } from '@/components/ui/button'
 import {IconPlay, IconStop} from '@/components/ui/icons'
 import { cn } from '@/lib/utils'
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 
 interface ChatMessageActionsProps extends React.ComponentProps<'div'> {
   message: Message
@@ -43,6 +43,9 @@ export function ChatMessageActions({
   className,
   ...props
 }: ChatMessageActionsProps) {
+  if (message.role !== "assistant") {
+      return null
+  }
   const [isPlaying, setIsPlaying] = useState<boolean>(false)
 
   const togglePlay = () => {
@@ -53,6 +56,11 @@ export function ChatMessageActions({
           playText(message.content, setIsPlaying)
       }
   }
+
+  useEffect(() => {
+      // togglePlay()
+      console.log("hello")
+  }, [message.content])
 
   return (
     <div
