@@ -16,11 +16,14 @@ import {
     DialogHeader,
     DialogTitle
 } from '@/components/ui/dialog'
-import {useState} from 'react'
+import {useEffect, useState} from 'react'
 import {Button} from './ui/button'
 import {Input} from './ui/input'
 import {toast} from 'react-hot-toast'
 import {CharacterAudioPlayer} from "@/components/character-audio-player";
+import {Report} from "@/components/report";
+import {EvaluationStage} from "@/lib/types";
+import {useRouter} from "next/navigation";
 
 const IS_PREVIEW = process.env.VERCEL_ENV === 'preview'
 
@@ -29,16 +32,23 @@ export interface ChatProps extends React.ComponentProps<'div'> {
     id?: string
 }
 
+async function evaluateConversation(): Promise<string> {
+    return new Promise(() => { return "hello"} )
+}
+
 
 export function Chat({id, initialMessages, className}: ChatProps) {
+    const router = useRouter()
     const [previewToken, setPreviewToken] = useLocalStorage<string | null>(
         'ai-token',
         null
     )
     const [playMessage, setPlayMessage] = useState<Message | null>(null)
+    const [evaluationStep, setEvaluationStep] = useState<EvaluationStage>("intro")
 
     const [previewTokenDialog, setPreviewTokenDialog] = useState(IS_PREVIEW)
     const [previewTokenInput, setPreviewTokenInput] = useState(previewToken ?? '')
+
     const {messages, append, reload, stop, isLoading, input, setInput} =
         useChat({
             initialMessages,
@@ -57,6 +67,27 @@ export function Chat({id, initialMessages, className}: ChatProps) {
             }
         })
 
+    const [report, setReport] = useState<string | null>(null)
+
+    useEffect(() => {
+        if (messages.length > 0 && evaluationStep === "intro") {
+            setEvaluationStep("conversation")
+        }
+    }, [messages.length])
+
+    const onEndChat = async () => {
+        setEvaluationStep("report")
+        const report = await evaluateConversation()
+        setReport(report)
+    }
+
+    const restart = () => {
+        setEvaluationStep("intro")
+        setReport(null)
+        router.refresh()
+        router.push('/')
+    }
+
     return (
         <>
             <div className={cn('pb-[200px] pt-2 md:pt-10', className)}>
@@ -65,6 +96,7 @@ export function Chat({id, initialMessages, className}: ChatProps) {
                         <ChatList messages={messages}/>
                         <ChatScrollAnchor trackVisibility={isLoading}/>
                         <CharacterAudioPlayer playMessage={playMessage} />
+                        {evaluationStep === "report" && <Report report={report} />}
                     </>
                 ) : (
                     <EmptyScreen setInput={setInput}/>
@@ -79,6 +111,9 @@ export function Chat({id, initialMessages, className}: ChatProps) {
                 messages={messages}
                 input={input}
                 setInput={setInput}
+                onEndChat={onEndChat}
+                evaluationStep={evaluationStep}
+                restart={restart}
             />
 
             <Dialog open={previewTokenDialog} onOpenChange={setPreviewTokenDialog}>

@@ -16,3 +16,5 @@ export type ServerActionResult<Result> = Promise<
       error: string
     }
 >
+
+export type EvaluationStage = "intro" | "conversation" | "report"
