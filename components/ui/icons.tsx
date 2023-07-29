@@ -96,11 +96,10 @@ function IconPerson() {
       <div className={"h-8 w-8 overflow-auto"}>
         <Image
             src={jasonPhoto}
-            fill
-            style={{ height: "100%", width: "100%"}}
+            style={{ height: "100%", width: "100%", position: "static"}}
             objectFit={"contain"}
             alt={"Jason's photo"}
-            className={'h-8 w-8 flex rounded-md'}
+            className={'static h-8 w-8 rounded-md'}
         />
       </div>
   )
