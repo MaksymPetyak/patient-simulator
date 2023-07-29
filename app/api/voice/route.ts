@@ -1,5 +1,5 @@
 import fs from 'fs';
-import {Readable} from 'stream';
+import { Readable } from 'stream';
 
 const voice = require("elevenlabs-node");
 const axios = require("axios");
@@ -61,7 +61,7 @@ const textToSpeech = async (
 
 export async function POST(req: Request) {
     const json = await req.json()
-    const {text} = json
+    const { text } = json
 
     const apiKey = process.env.ELEVEN_LABS_API_KEY
     const voiceID = "ATxpEsaUlohWZ7COkUFy"
@@ -80,7 +80,7 @@ export async function POST(req: Request) {
         });
 
         const response = new Response(Readable.from(audioStream), {
-            headers: {'Content-Type': 'audio/mpeg'}
+            headers: { 'Content-Type': 'audio/mpeg' }
         });
         return response;
     } catch (error) {
