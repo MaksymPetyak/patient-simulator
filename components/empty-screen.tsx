@@ -43,7 +43,7 @@ export function EmptyScreen({setInput}: Pick<UseChatHelpers, 'setInput'>) {
                         <br/>
                     </span>
 
-                    Perform an appropriate history, disclose the results, and manage.
+                    Perform an appropriate history, disclose the results, and manage. Try to finish in 14 minutes.
                 </p>
                 {/*<p className="leading-normal text-muted-foreground">*/}
                 {/*    */}
