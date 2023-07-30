@@ -1,7 +1,7 @@
 import {Configuration, OpenAIApi} from 'openai-edge'
 
 import {auth} from '@/auth'
-import {Message} from "ai";
+import {Message, OpenAIStream, StreamingTextResponse} from "ai";
 
 const configuration = new Configuration({
     apiKey: process.env.OPENAI_API_KEY
@@ -75,14 +75,14 @@ export async function POST(req: Request) {
             // @ts-ignore
             messages: fullMessages,
             temperature: 0.0,
-            stream: false
+            stream: true,
         })
-        const responseJson = await res.json()
 
-        return new Response(JSON.stringify({report: responseJson["choices"][0]["message"]["content"]}), {
-            headers: {'content-type': 'application/json'},
-            status: 200
-        })
+        // Convert the response into a friendly text-stream
+        const stream = OpenAIStream(res);
+
+        // Respond with the stream
+        return new StreamingTextResponse(stream);
     } catch (e) {
         console.log("error getting a response")
         console.log(e)

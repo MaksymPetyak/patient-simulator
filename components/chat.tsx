@@ -1,6 +1,6 @@
 'use client'
 
-import {useChat, type Message} from 'ai/react'
+import {useChat, type Message, useCompletion} from 'ai/react'
 
 import {cn} from '@/lib/utils'
 import {ChatList} from '@/components/chat-list'
@@ -75,7 +75,9 @@ export function Chat({id, initialMessages, className}: ChatProps) {
             }
         })
 
-    const [report, setReport] = useState<string | null>(null)
+    const { completion, complete } = useCompletion({
+        api: "/api/evaluation",
+    });
 
     useEffect(() => {
         if (messages.length > 0 && evaluationStep === "intro") {
@@ -85,13 +87,11 @@ export function Chat({id, initialMessages, className}: ChatProps) {
 
     const onEndChat = async () => {
         setEvaluationStep("report")
-        const report = await evaluateConversation(messages)
-        setReport(report)
+        complete("", { body: { messages }})
     }
 
     const restart = () => {
         setEvaluationStep("intro")
-        setReport(null)
         router.refresh()
         router.push('/')
     }
@@ -104,7 +104,7 @@ export function Chat({id, initialMessages, className}: ChatProps) {
                         <ChatList messages={messages}/>
                         <ChatScrollAnchor trackVisibility={isLoading}/>
                         <CharacterAudioPlayer playMessage={playMessage} />
-                        {evaluationStep === "report" && <Report report={report} />}
+                        {evaluationStep === "report" && <Report report={completion} />}
                     </>
                 ) : (
                     <EmptyScreen setInput={setInput}/>
