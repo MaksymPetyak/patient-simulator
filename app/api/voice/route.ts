@@ -65,7 +65,7 @@ export async function POST(req: Request) {
 
     const apiKey = process.env.ELEVEN_LABS_API_KEY
     const voiceID = "ATxpEsaUlohWZ7COkUFy"
-    const filePath = "audio.mp3";
+    const filePath = "/tmp/audio.mp3";
 
     try {
         await textToSpeech(apiKey, voiceID, filePath, text).then((res) => {
