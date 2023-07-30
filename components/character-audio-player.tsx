@@ -64,16 +64,17 @@ export function CharacterAudioPlayer({
         return null
     }
 
-    return (
-        <div
-            className={cn(
-                'flex items-center justify-center',
-            )}
-        >
-            <Button variant="default" size="lg" onClick={togglePlay}>
-                {isPlaying ? <IconStop/> : <IconPlay/>}
-                <span className="sr-only">Play sound</span>
-            </Button>
-        </div>
-    )
+    return null
+    // return (
+    //     <div
+    //         className={cn(
+    //             'flex items-center justify-center',
+    //         )}
+    //     >
+    //         <Button variant="default" size="lg" onClick={togglePlay}>
+    //             {isPlaying ? <IconStop/> : <IconPlay/>}
+    //             <span className="sr-only">Play sound</span>
+    //         </Button>
+    //     </div>
+    // )
 }
