@@ -32,8 +32,16 @@ export interface ChatProps extends React.ComponentProps<'div'> {
     id?: string
 }
 
-async function evaluateConversation(): Promise<string> {
-    return new Promise(() => { return "hello"} )
+async function evaluateConversation(messages: Message[]): Promise<string> {
+    const response = await fetch('/api/evaluation', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ messages })
+    })
+
+    return (await response.json())["report"]
 }
 
 
@@ -77,7 +85,7 @@ export function Chat({id, initialMessages, className}: ChatProps) {
 
     const onEndChat = async () => {
         setEvaluationStep("report")
-        const report = await evaluateConversation()
+        const report = await evaluateConversation(messages)
         setReport(report)
     }
 
