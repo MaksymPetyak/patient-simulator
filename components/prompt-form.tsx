@@ -12,7 +12,7 @@ import {
 import { useEnterSubmit } from '@/lib/hooks/use-enter-submit'
 import { useRouter } from 'next/navigation'
 import {useWhisper} from "@chengsokdara/use-whisper";
-import {useEffect} from "react";
+import {useEffect, useState} from "react";
 import {cn} from "@/lib/utils";
 
 export interface PromptProps
@@ -22,7 +22,7 @@ export interface PromptProps
 }
 
 
-function RecordingButton({ setInput } : { setInput: (text: string) => void;}) {
+function RecordingButton({ setInput, setIsRecording } : { setInput: (text: string) => void; setIsRecording: (isRecording: boolean) => void}) {
     const {
       recording,
       speaking,
@@ -46,6 +46,10 @@ function RecordingButton({ setInput } : { setInput: (text: string) => void;}) {
             setInput(transcript.text ?? "")
         }
     }, [transcript, setInput])
+
+    useEffect(() => {
+        setIsRecording(recording)
+    }, [recording, setIsRecording])
 
     return (
       <div className={cn(
@@ -78,6 +82,9 @@ export function PromptForm({
 }: PromptProps) {
   const { formRef, onKeyDown } = useEnterSubmit()
   const inputRef = React.useRef<HTMLTextAreaElement>(null)
+
+  const [isRecording, setIsRecording] = useState(false)
+
   const router = useRouter()
 
   React.useEffect(() => {
@@ -131,13 +138,13 @@ export function PromptForm({
         />
         <div className="absolute right-0 top-4 sm:right-4">
             <div className={"flex gap-2"}>
-                <RecordingButton setInput={setInput} />
+                <RecordingButton setInput={setInput} setIsRecording={setIsRecording} />
                 <Tooltip>
                     <TooltipTrigger asChild>
                         <Button
                             type="submit"
                             size="icon"
-                            disabled={isLoading || input === ''}
+                            disabled={isLoading || input === '' || isRecording}
                         >
                             <IconArrowElbow />
                             <span className="sr-only">Send message</span>
