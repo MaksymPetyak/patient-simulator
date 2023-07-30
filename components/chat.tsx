@@ -103,7 +103,7 @@ export function Chat({id, initialMessages, className}: ChatProps) {
                     <>
                         <ChatList messages={messages}/>
                         <ChatScrollAnchor trackVisibility={isLoading}/>
-                        <CharacterAudioPlayer playMessage={playMessage} />
+                        {/*<CharacterAudioPlayer playMessage={playMessage} />*/}
                         {evaluationStep === "report" && <Report report={report} />}
                     </>
                 ) : (
