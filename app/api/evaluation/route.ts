@@ -39,9 +39,12 @@ const initialSystemMessages = [
 * Assesses for current sexual activity
 * Assesses for sexual exposure risk
 * Assesses nonsexual exposure risk (e.g., IV drug use, occupational needle sticks, tattoos)
-* Breaks bad news appropriately. Provides initial warning statement. Provides appropriate pauses to allow information to sink in. Gave news of HIV result in an empathic way. Asked about baseline understanding of HIV. Asked about emotional state following news of HIV 
-* Management. Discusses natural history and treatment of HIV (broadly). Arranges for bloodwork. Advised to tell partner/contact tracing. Advised barrier protection. Arranges follow up with themselves/HIV clinic. Organization (one bubble). Encounter was purposeful with logical flow. Intervenes with the patient as appropriate.
-* Interpersonal Behaviour (one bubble). Demonstrates respectful management of interaction. Listens appropriately. Uses appropriate body language. Avoids offensive/aggressive behavior.
+* Breaks bad news appropriately. 
+( check how doctor provides initial warning statement. Provides appropriate pauses to allow information to sink in. Gave news of HIV result in an empathic way. Asked about baseline understanding of HIV. Asked about emotional state following news of HIV) 
+* Management. 
+(check how doctor discusses natural history and treatment of HIV (broadly). Arranges for bloodwork. Advised to tell partner/contact tracing. Advised barrier protection. Arranges follow up with themselves/HIV clinic. Organization (one bubble). Encounter was purposeful with logical flow. Intervenes with the patient as appropriate.)
+* Interpersonal Behaviour 
+(check how doctor demonstrates respectful management of interaction. Listens appropriately. Uses appropriate body language. Avoids offensive/aggressive behavior.)
 
 For each criteria give a score choosing between 
 Inadequate | Marginal | Adequate | Superior
