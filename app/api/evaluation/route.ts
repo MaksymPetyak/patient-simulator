@@ -34,24 +34,22 @@ const initialSystemMessages = [
 * Checks for understanding, invites response
 * Responds appropriately to emotional reactions 
 * Demonstrates appropriate attitude (ex. genuine, non-judgmental)  
-* Demonstrates appropriate non-verbal behaviour and control 
 * Asks whether the patient has any symptoms related to HIV/AIDS (opportunistic infections, nightsweats, weight loss, diarrhea)
 * Assesses for current sexual activity
 * Assesses for sexual exposure risk
 * Assesses nonsexual exposure risk (e.g., IV drug use, occupational needle sticks, tattoos)
-* Breaks bad news appropriately. 
-( check how doctor provides initial warning statement. Provides appropriate pauses to allow information to sink in. Gave news of HIV result in an empathic way. Asked about baseline understanding of HIV. Asked about emotional state following news of HIV) 
-* Management. 
-(check how doctor discusses natural history and treatment of HIV (broadly). Arranges for bloodwork. Advised to tell partner/contact tracing. Advised barrier protection. Arranges follow up with themselves/HIV clinic. Organization (one bubble). Encounter was purposeful with logical flow. Intervenes with the patient as appropriate.)
-* Interpersonal Behaviour 
-(check how doctor demonstrates respectful management of interaction. Listens appropriately. Uses appropriate body language. Avoids offensive/aggressive behavior.)
 
-For each criteria give a score choosing between 
+Include every criteria in your repsonse and give a score choosing between 
 Inadequate | Marginal | Adequate | Superior
 and give a short explanation of the score and suggestion for improvement. Make sure to format the response nicely with whitespace between each section. Put the section and score in bold with html b tag.
 `
     }
 ];
+
+// * Management.
+// (check how doctor discusses natural history and treatment of HIV (broadly). Arranges for bloodwork. Advised to tell partner/contact tracing. Advised barrier protection. Arranges follow up with themselves/HIV clinic. Organization (one bubble). Encounter was purposeful with logical flow. Intervenes with the patient as appropriate.)
+// * Interpersonal Behaviour
+// (check how doctor demonstrates respectful management of interaction. Listens appropriately. Uses appropriate body language. Avoids offensive/aggressive behavior.)
 
 export async function POST(req: Request) {
     console.log("evaluating")
@@ -74,7 +72,7 @@ export async function POST(req: Request) {
     }
     try {
         const res = await openai.createChatCompletion({
-            model: 'gpt-3.5-turbo',
+            model: 'gpt-4',
             // @ts-ignore
             messages: fullMessages,
             temperature: 0.0,
