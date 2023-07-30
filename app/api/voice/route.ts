@@ -10,13 +10,13 @@ const elevenLabsAPI = "https://api.elevenlabs.io/v1";
 
 // Need to adapt from elevenlabs-node because of https://github.com/FelixWaweru/elevenlabs-node/issues/16
 const textToSpeech = async (
-    apiKey,
-    voiceID,
-    fileName,
-    textInput,
-    stability,
-    similarityBoost,
-    modelId
+    apiKey: string | undefined,
+    voiceID: string,
+    fileName: string,
+    textInput: string,
+    stability?: number,
+    similarityBoost?: number,
+    modelId?: string,
 ) => {
     try {
         if (!apiKey || !voiceID || !fileName || !textInput) {
@@ -79,6 +79,7 @@ export async function POST(req: Request) {
             fs.unlinkSync(filePath); // Delete the file after streaming
         });
 
+        // @ts-ignore
         const response = new Response(Readable.from(audioStream), {
             headers: { 'Content-Type': 'audio/mpeg' }
         });

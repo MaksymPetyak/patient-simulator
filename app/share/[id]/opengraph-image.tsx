@@ -14,10 +14,12 @@ export const size = {
 export const contentType = 'image/png'
 
 const interRegular = fetch(
+// @ts-ignore
   new URL('../../../assets/fonts/Inter-Regular.woff', import.meta.url)
 ).then(res => res.arrayBuffer())
 
 const interBold = fetch(
+// @ts-ignore
   new URL('../../../assets/fonts/Inter-Bold.woff', import.meta.url)
 ).then(res => res.arrayBuffer())
 

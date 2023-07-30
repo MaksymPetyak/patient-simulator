@@ -72,6 +72,7 @@ export async function POST(req: Request) {
     try {
         const res = await openai.createChatCompletion({
             model: 'gpt-3.5-turbo',
+            // @ts-ignore
             messages: fullMessages,
             temperature: 0.0,
             stream: false
