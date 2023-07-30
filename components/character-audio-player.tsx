@@ -20,8 +20,7 @@ async function playText(text: string, setIsPlaying: (isPlaying: boolean) => void
         throw new Error("Speech generation failed");
     }
 
-    // @ts-ignore
-    const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+    const audioContext = new window.AudioContext();
     const audioData = await response.arrayBuffer();
     const audioBuffer = await audioContext.decodeAudioData(audioData);
 
