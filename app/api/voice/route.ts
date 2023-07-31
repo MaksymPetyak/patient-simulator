@@ -59,15 +59,9 @@ const textToSpeech = async (
     }
 };
 
-// remove the part of text in the end in parantheses
-const removeParantheses = (text: string) => {
-    return text.replace(/\(.*\)$/, '');
-}
-
 export async function POST(req: Request) {
     const json = await req.json()
-    let { text } = json
-    text = removeParantheses(text)
+    const { text } = json
 
     const apiKey = process.env.ELEVEN_LABS_API_KEY
     const voiceID = "ATxpEsaUlohWZ7COkUFy"
