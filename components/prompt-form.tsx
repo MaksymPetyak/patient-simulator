@@ -2,21 +2,76 @@ import { UseChatHelpers } from 'ai/react'
 import * as React from 'react'
 import Textarea from 'react-textarea-autosize'
 
-import { Button, buttonVariants } from '@/components/ui/button'
-import { IconArrowElbow, IconPlus } from '@/components/ui/icons'
+import { Button } from '@/components/ui/button'
+import {IconArrowElbow, IconMicrophone, IconStop} from '@/components/ui/icons'
 import {
   Tooltip,
   TooltipContent,
   TooltipTrigger
 } from '@/components/ui/tooltip'
 import { useEnterSubmit } from '@/lib/hooks/use-enter-submit'
-import { cn } from '@/lib/utils'
 import { useRouter } from 'next/navigation'
+import {useWhisper} from "@chengsokdara/use-whisper";
+import {useEffect, useState} from "react";
+import {cn} from "@/lib/utils";
 
 export interface PromptProps
   extends Pick<UseChatHelpers, 'input' | 'setInput'> {
   onSubmit: (value: string) => Promise<void>
   isLoading: boolean
+}
+
+
+function RecordingButton({ setInput, setIsRecording } : { setInput: (text: string) => void; setIsRecording: (isRecording: boolean) => void}) {
+    const {
+      recording,
+      speaking,
+      transcribing,
+      transcript,
+      pauseRecording,
+      startRecording,
+      stopRecording,
+  } = useWhisper({
+    // FIXME: Move server side, and delete the temp key later
+    apiKey: process.env.NEXT_PUBLIC_OPENAI_API_TOKEN,
+    streaming: true,
+    timeSlice: 2_000,
+    whisperConfig: {
+        language: 'en',
+    },
+  })
+
+    useEffect(() => {
+        if (transcript) {
+            setInput(transcript.text ?? "")
+        }
+    }, [transcript, setInput])
+
+    useEffect(() => {
+        setIsRecording(recording)
+    }, [recording, setIsRecording])
+
+    return (
+      <div className={cn(
+          "flex items-center justify-center bg-gray-50 hover:bg-gray-200 border border-gray-200 rounded-full p-2",
+            recording && "bg-red-500 hover:bg-red-600 border border-red-700",
+      )}
+          onClick={() => {
+              if (recording) {
+                  stopRecording()
+              } else {
+                  startRecording()
+              }}
+          }
+      >
+          {!recording && (
+              <IconMicrophone  />
+          )}
+          {recording && (
+              <IconStop className={"text-white"}/>
+          )}
+      </div>
+  )
 }
 
 export function PromptForm({
@@ -27,6 +82,9 @@ export function PromptForm({
 }: PromptProps) {
   const { formRef, onKeyDown } = useEnterSubmit()
   const inputRef = React.useRef<HTMLTextAreaElement>(null)
+
+  const [isRecording, setIsRecording] = useState(false)
+
   const router = useRouter()
 
   React.useEffect(() => {
@@ -79,19 +137,22 @@ export function PromptForm({
           className="min-h-[60px] w-full resize-none bg-transparent px-4 py-[1.3rem] focus-within:outline-none sm:text-sm"
         />
         <div className="absolute right-0 top-4 sm:right-4">
-          <Tooltip>
-            <TooltipTrigger asChild>
-              <Button
-                type="submit"
-                size="icon"
-                disabled={isLoading || input === ''}
-              >
-                <IconArrowElbow />
-                <span className="sr-only">Send message</span>
-              </Button>
-            </TooltipTrigger>
-            <TooltipContent>Send message</TooltipContent>
-          </Tooltip>
+            <div className={"flex gap-2"}>
+                <RecordingButton setInput={setInput} setIsRecording={setIsRecording} />
+                <Tooltip>
+                    <TooltipTrigger asChild>
+                        <Button
+                            type="submit"
+                            size="icon"
+                            disabled={isLoading || input === '' || isRecording}
+                        >
+                            <IconArrowElbow />
+                            <span className="sr-only">Send message</span>
+                        </Button>
+                    </TooltipTrigger>
+                    <TooltipContent>Send message</TooltipContent>
+                </Tooltip>
+            </div>
         </div>
       </div>
     </form>

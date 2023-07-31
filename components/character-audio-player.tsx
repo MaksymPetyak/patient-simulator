@@ -20,7 +20,7 @@ async function playText(text: string, setIsPlaying: (isPlaying: boolean) => void
         throw new Error("Speech generation failed");
     }
 
-    const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+    const audioContext = new window.AudioContext();
     const audioData = await response.arrayBuffer();
     const audioBuffer = await audioContext.decodeAudioData(audioData);
 
@@ -44,7 +44,9 @@ export function CharacterAudioPlayer({
             setIsPlaying(false)
         } else {
             setIsPlaying(true)
-            playText(playMessage.content, setIsPlaying)
+            if (playMessage !== null) {
+                playText(playMessage.content, setIsPlaying)
+            }
         }
     }
 
@@ -62,16 +64,17 @@ export function CharacterAudioPlayer({
         return null
     }
 
-    return (
-        <div
-            className={cn(
-                'flex items-center justify-center',
-            )}
-        >
-            <Button variant="default" size="lg" onClick={togglePlay}>
-                {isPlaying ? <IconStop/> : <IconPlay/>}
-                <span className="sr-only">Play sound</span>
-            </Button>
-        </div>
-    )
+    return null
+    // return (
+    //     <div
+    //         className={cn(
+    //             'flex items-center justify-center',
+    //         )}
+    //     >
+    //         <Button variant="default" size="lg" onClick={togglePlay}>
+    //             {isPlaying ? <IconStop/> : <IconPlay/>}
+    //             <span className="sr-only">Play sound</span>
+    //         </Button>
+    //     </div>
+    // )
 }

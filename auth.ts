@@ -16,6 +16,7 @@ export const {
   CSRF_experimental // will be removed in future
 } = NextAuth({
   providers: [GitHub],
+  secret: process.env.AUTH_SECRET,
   callbacks: {
     jwt({ token, profile }) {
       if (profile) {

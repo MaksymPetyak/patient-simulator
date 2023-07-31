@@ -23,7 +23,7 @@ export function EmptyScreen({setInput}: Pick<UseChatHelpers, 'setInput'>) {
         <div className="mx-auto max-w-2xl px-4">
             <div className="rounded-lg border bg-background p-8">
                 <h1 className="mb-2 text-lg font-semibold">
-                    Welcome to patient simulator!
+                    Welcome to Patient Simulator!
                 </h1>
                 <div className={"flex justify-center items-center mb-2"}>
                     <Image src={jasonPhoto} alt={"Photo of the patient"} className={"w-48 h-48 rounded-lg"}/>
