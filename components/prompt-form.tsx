@@ -27,20 +27,17 @@ function RecordingButton({setInput, setIsRecording}: {
     setIsRecording: (isRecording: boolean) => void
 }) {
     const onTranscribe = async (blob: Blob) => {
-        const base64 = await new Promise<string | ArrayBuffer | null>(
-            (resolve) => {
-                const reader = new FileReader()
-                reader.onloadend = () => resolve(reader.result)
-                reader.readAsDataURL(blob)
-            }
-        )
-        const body = JSON.stringify({file: base64, model: 'whisper-1'})
-        const headers = {'Content-Type': 'application/json'}
+        const formData = new FormData();
+        formData.append('file', blob, 'audio.wav');
+
         const {default: axios} = await import('axios')
-        const response = await axios.post('/api/whisper', body, {
-            headers,
-        })
-        const { text } = await response.data
+
+        const response = await fetch('/api/whisper', {
+            method: 'POST',
+            body: formData,
+        });
+        const {text, error} = await response.json();
+
         // you must return result from your server in Transcript format
         return {
             blob,
@@ -48,7 +45,7 @@ function RecordingButton({setInput, setIsRecording}: {
         }
     }
 
-    const { transcript, recording, startRecording, stopRecording } = useWhisper({
+    const {transcript, recording, startRecording, stopRecording} = useWhisper({
         // callback to handle transcription with custom server
         onTranscribe,
     })
