@@ -4,18 +4,9 @@ import fs from "fs";
 
 const {Configuration, OpenAIApi} = require("openai");
 
-const configuration = new Configuration({
+const openAIConfiguration = new Configuration({
     apiKey: process.env.OPENAI_API_KEY,
 });
-
-const FormData = require('form-data');
-
-
-export const config = {
-    api: {
-        bodyParser: false,
-    },
-}
 
 export async function POST(request: NextRequest) {
     const data = await request.formData();
@@ -31,7 +22,7 @@ export async function POST(request: NextRequest) {
     const path = `/tmp/${file.name}`
     await writeFile(path, buffer)
 
-    const openai = new OpenAIApi(configuration);
+    const openai = new OpenAIApi(openAIConfiguration);
     const response = await openai.createTranscription(
         fs.createReadStream(path),
         "whisper-1"
