@@ -2,8 +2,8 @@ import { kv } from '@vercel/kv'
 import { OpenAIStream, StreamingTextResponse } from 'ai'
 import { Configuration, OpenAIApi } from 'openai-edge'
 
-import { auth } from '@/auth'
 import { nanoid } from '@/lib/utils'
+import {currentUser} from "@clerk/nextjs";
 
 export const runtime = 'edge'
 
@@ -76,7 +76,7 @@ export async function POST(req: Request) {
   const { messages, previewToken } = json
 
   const fullMessages = initialSystemMessages.concat(messages);
-  const userId = (await auth())?.user.id
+  const userId = (await currentUser())?.id;
 
   if (!userId) {
     return new Response('Unauthorized', {

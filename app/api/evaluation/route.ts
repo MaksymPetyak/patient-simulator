@@ -1,7 +1,7 @@
-import {Configuration, OpenAIApi} from 'openai-edge'
+import { Configuration, OpenAIApi } from 'openai-edge'
 
-import {auth} from '@/auth'
-import {Message, OpenAIStream, StreamingTextResponse} from "ai";
+import { Message, OpenAIStream, StreamingTextResponse } from "ai";
+import { currentUser } from "@clerk/nextjs";
 
 const configuration = new Configuration({
     apiKey: process.env.OPENAI_API_KEY
@@ -52,8 +52,6 @@ and give a short explanation of the score and suggestion for improvement. Make s
 // (check how doctor demonstrates respectful management of interaction. Listens appropriately. Uses appropriate body language. Avoids offensive/aggressive behavior.)
 
 export async function POST(req: Request) {
-    console.log("evaluating")
-
     const json = await req.json()
     const {messages} = json
 
@@ -63,7 +61,7 @@ export async function POST(req: Request) {
     }
 
     const fullMessages = initialSystemMessages.concat(chatHistoryMessage);
-    const userId = (await auth())?.user.id
+    const userId = (await currentUser())?.id
 
     if (!userId) {
         return new Response('Unauthorized', {
